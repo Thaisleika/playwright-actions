@@ -5,7 +5,7 @@ on: #trigger -- comandos/condicoes que inicializam o test script nessas branches
   pull_request:
     branches: [ main, master ]
 jobs: # tarefas que devem ser executadas
-  E2Etests:
+  test:
     timeout-minutes: 60
     runs-on: ubuntu-latest #nessa etapa que defique onde vai rodar os testes Ex: Docker (onde vai rodar o teste?) agente de execuçao
     steps: #uses: ativando pluging no github actions
@@ -24,10 +24,9 @@ jobs: # tarefas que devem ser executadas
     - name: Run E2E tests
       run: npx playwright test
 
-    - uses: actions/upload-artifact@v4 #relatorio/report HTML: faz o upload do artefato encontrado nos testes e os publica nesse report
-      if: ${{ !cancelled() }} 
-      #ou colocamos a opcao de always() para que sempre haja um report mesmo que cancele ou pare a execucao do test
+    - uses: actions/upload-artifact@v4 #comenta o artefato encontrado no report
+      if: ${{ !cancelled() }}
       with:
-        name: playwright-report #nome do report
-        path: playwright-report/ # nome da pasta
+        name: playwright-report
+        path: playwright-report/
         retention-days: 30
